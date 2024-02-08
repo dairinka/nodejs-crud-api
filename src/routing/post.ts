@@ -16,5 +16,5 @@ export const post = (
     errorResponse(res, 404, 'There is no such endpoint');
     return;
   }
-  res.end('good post query');
+  res.write('good post query');
 };

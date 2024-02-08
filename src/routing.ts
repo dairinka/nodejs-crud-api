@@ -26,4 +26,5 @@ export const routing = (
     default:
       errorResponse(res, 404, `you can't use ${req.method} method`);
   }
+  res.end();
 };

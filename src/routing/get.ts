@@ -9,11 +9,11 @@ export const get = (
   switch (req.url) {
     case '/api/users':
       res.writeHead(200);
-      res.end('books');
+      res.write('books');
       break;
     case '/authors':
       res.writeHead(200);
-      res.end('authors');
+      res.write('authors');
       break;
     default: {
       // res.writeHead(404);
