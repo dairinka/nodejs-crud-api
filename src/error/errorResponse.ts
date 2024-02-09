@@ -6,5 +6,5 @@ export const errorResponse = (
   message: string,
 ) => {
   res.writeHead(status);
-  res.write(JSON.stringify({ error: message }));
+  res.end(JSON.stringify({ error: message }));
 };

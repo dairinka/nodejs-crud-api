@@ -1,4 +1,4 @@
-import { createServer } from 'node:http';
+import { createServer } from 'http';
 import { routing } from './routing';
 
 const server = createServer(routing);

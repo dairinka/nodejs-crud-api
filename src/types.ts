@@ -7,8 +7,8 @@ export interface IUserDb {
 
 export interface IServerResponse {
   status: {
-    statusCode: number;
-    statusMessage: string;
+    code: number;
+    message: string;
   };
   users?: IUserDb[];
 }

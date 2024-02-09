@@ -4,15 +4,17 @@ import { put } from './routing/put';
 import { del } from './routing/delete';
 import { IncomingMessage, ServerResponse } from 'http';
 import { errorResponse } from './error/errorResponse';
+import { currentUserDb } from './database/UserDb';
 
 export const routing = (
   req: IncomingMessage,
   res: ServerResponse<IncomingMessage>,
 ) => {
+  const db = currentUserDb;
   res.setHeader('Content-Type', 'application/json');
   switch (req.method) {
     case 'POST':
-      post(req, res);
+      post(req, res, db);
       break;
     case 'GET':
       get(req, res);
@@ -26,5 +28,4 @@ export const routing = (
     default:
       errorResponse(res, 404, `you can't use ${req.method} method`);
   }
-  res.end();
 };

@@ -1,7 +1,7 @@
-import uuid from 'uuid';
+import { v4 as uuidv4, validate } from 'uuid';
 import { IUserDb, IServerResponse } from 'types';
 
-class UserDb {
+export class UserDb {
   db: Map<string, IUserDb>;
   constructor() {
     this.db = new Map();
@@ -14,20 +14,29 @@ class UserDb {
     const serverStatus = {
       200: '',
       204: 'File was successfully deleted',
-      400: 'The request body does not contain required fields',
+      400: `The request body does not contain required fields or field is of the wrong type
+For example         
+       
+{
+  "username": "Hermione",
+    "age": 11,
+    "hobbies": ["books"]
+
+}
+            `,
       404: "Record with this id doesn't exist",
     };
     return {
       status: {
-        statusCode,
-        statusMessage: serverStatus[statusCode],
+        code: statusCode,
+        message: serverStatus[statusCode],
       },
       users: usersData,
     };
   }
 
   __validationUserId(userId: string): IServerResponse | null {
-    if (!uuid.validate(userId)) return this.__returnServerAnswer(400);
+    if (!validate(userId)) return this.__returnServerAnswer(400);
     if (!this.db.has(userId)) return this.__returnServerAnswer(404);
     return null;
   }
@@ -47,18 +56,27 @@ class UserDb {
   }
 
   addUser({ username, age, hobbies }: IUserDb): IServerResponse {
+    console.log('username', username, 'age', age, 'hobbies', hobbies);
     if (!username || !age || !hobbies) {
       return this.__returnServerAnswer(400);
     }
 
+    if (
+      typeof username !== 'string' ||
+      typeof age !== 'number' ||
+      !Array.isArray(hobbies)
+    )
+      return this.__returnServerAnswer(400);
+
+    const userId = uuidv4();
     const userInfo: IUserDb = {
-      id: uuid.v4(),
+      id: userId,
       username,
       age,
       hobbies,
     };
-
-    this.db.set(String(userInfo.id), userInfo);
+    console.log('userInfo', userInfo);
+    this.db.set(userId, userInfo);
 
     return this.__returnServerAnswer(200, [userInfo]);
   }
