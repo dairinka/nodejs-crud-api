@@ -7,24 +7,42 @@ export class UserDb {
     this.db = new Map();
   }
 
+  // __returnServerAnswer(
+  //   statusCode: 200 | 201 | 204 | 400 | 404,
+  //   newMessage?: string,
+  //   usersData?: IUserDb[],
+  // ): IServerResponse {
+  //   const serverStatus = {
+  //     200: '',
+  //     201: '',
+  //     204: { success: 'File was successfully deleted' },
+  //     400: {
+  //       error:
+  //         newMessage || 'the request body does not contain required fields',
+  //     },
+  //     404: { error: 'no entry with this ID exists' },
+  //   };
+  //   return {
+  //     status: {
+  //       code: statusCode,
+  //       message: JSON.stringify(serverStatus[statusCode]),
+  //     },
+  //     users: usersData,
+  //   };
+  // }
+
   __returnServerAnswer(
-    statusCode: 200 | 204 | 400 | 404,
+    statusCode: 200 | 201 | 204 | 400 | 404,
+    newMessage?: string,
     usersData?: IUserDb[],
   ): IServerResponse {
     const serverStatus = {
       200: '',
+      201: '',
       204: 'File was successfully deleted',
-      400: `The request body does not contain required fields or field is of the wrong type
-For example         
-       
-{
-  "username": "Hermione",
-    "age": 11,
-    "hobbies": ["books"]
+      400: `Error: ${newMessage || 'the request body does not contain required fields'}`,
 
-}
-            `,
-      404: "Record with this id doesn't exist",
+      404: 'Error: no entry with this ID exists',
     };
     return {
       status: {
@@ -36,14 +54,16 @@ For example
   }
 
   __validationUserId(userId: string): IServerResponse | null {
-    if (!validate(userId)) return this.__returnServerAnswer(400);
+    if (!validate(userId))
+      return this.__returnServerAnswer(400, 'userId is invalid (not uuid)');
     if (!this.db.has(userId)) return this.__returnServerAnswer(404);
     return null;
   }
 
   getAllUsers() {
     const users = Array.from(this.db.values());
-    return this.__returnServerAnswer(200, users);
+    console.log('users', users);
+    return this.__returnServerAnswer(200, '', users);
   }
 
   getUserById(userId: string): IServerResponse {
@@ -52,7 +72,7 @@ For example
 
     const userInfo = this.db.get(userId) as IUserDb;
 
-    return this.__returnServerAnswer(200, [userInfo]);
+    return this.__returnServerAnswer(200, '', [userInfo]);
   }
 
   addUser({ username, age, hobbies }: IUserDb): IServerResponse {
@@ -66,7 +86,10 @@ For example
       typeof age !== 'number' ||
       !Array.isArray(hobbies)
     )
-      return this.__returnServerAnswer(400);
+      return this.__returnServerAnswer(
+        400,
+        'Some fields are of the wrong type',
+      );
 
     const userId = uuidv4();
     const userInfo: IUserDb = {
@@ -78,7 +101,7 @@ For example
     console.log('userInfo', userInfo);
     this.db.set(userId, userInfo);
 
-    return this.__returnServerAnswer(200, [userInfo]);
+    return this.__returnServerAnswer(201, '', [userInfo]);
   }
 
   updateUserData(userId: string, userData: Partial<IUserDb>) {
@@ -89,7 +112,7 @@ For example
     const updateUserData = Object.assign(previousUserInfo, userData);
     this.db.set(userId, updateUserData);
 
-    return this.__returnServerAnswer(200, [updateUserData]);
+    return this.__returnServerAnswer(200, '', [updateUserData]);
   }
 
   deleteUserById(userId: string) {

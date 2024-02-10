@@ -12,12 +12,13 @@ export const routing = (
 ) => {
   const db = currentUserDb;
   res.setHeader('Content-Type', 'application/json');
+  console.log('req.method', req.method);
   switch (req.method) {
     case 'POST':
       post(req, res, db);
       break;
     case 'GET':
-      get(req, res);
+      get(req, res, db);
       break;
     case 'PUT':
       put(req, res);
