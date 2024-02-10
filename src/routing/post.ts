@@ -28,7 +28,7 @@ export const post = (
       const { status, users } = serverResponse;
       res.statusCode = status.code;
 
-      if (status.code === 200) res.end(JSON.stringify(users && users[0]));
+      if (status.code === 201) res.end(JSON.stringify(users && users[0]));
       res.end(status.message);
     } catch (err) {
       console.error(err);
