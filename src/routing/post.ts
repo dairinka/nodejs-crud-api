@@ -28,8 +28,11 @@ export const post = (
       const { status, users } = serverResponse;
       res.statusCode = status.code;
 
-      if (status.code === 201) res.end(JSON.stringify(users && users[0]));
-      res.end(status.message);
+      if (status.code === 201) {
+        res.end(JSON.stringify(users && users[0]));
+        return;
+      }
+      res.end(JSON.stringify(status.message));
     } catch (err) {
       console.error(err);
       res.statusCode = 400;

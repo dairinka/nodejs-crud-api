@@ -40,8 +40,9 @@ export const get = (
       res.end(
         JSON.stringify((users && users.length === 1 && users[0]) || users),
       );
+      return;
     }
-    res.end(status.message);
+    res.end(JSON.stringify(status.message));
   } catch (err) {
     console.log(err);
   }

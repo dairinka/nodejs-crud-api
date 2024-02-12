@@ -42,8 +42,11 @@ export const put = (
         const { status, users } = serverResponse;
         res.statusCode = status.code;
 
-        if (status.code === 200) res.end(JSON.stringify(users && users[0]));
-        res.end(status.message);
+        if (status.code === 200) {
+          res.end(JSON.stringify(users && users[0]));
+          return;
+        }
+        res.end(JSON.stringify(status.message));
       }
     } catch (err) {
       console.log(err);

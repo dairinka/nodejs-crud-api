@@ -16,7 +16,7 @@ const config: webpack.Configuration = {
             allowImportingTsExtensions: false,
           },
         },
-        exclude: /node_modules/,
+        exclude: [/node_modules/, /__tests__/],
       },
     ],
   },
