@@ -76,7 +76,6 @@ export class UserDb {
   }
 
   addUser({ username, age, hobbies }: IUserDb): IServerResponse {
-    console.log('username', username, 'age', age, 'hobbies', hobbies);
     if (!username || !age || !hobbies) {
       return this.__returnServerAnswer(400);
     }
@@ -108,6 +107,52 @@ export class UserDb {
     const getValidationUserId = this.__validationUserId(userId);
     if (getValidationUserId) return getValidationUserId;
 
+    const checkFieldsName = Object.keys(userData).every((field) =>
+      ['username', 'age', 'hobbies'].includes(field),
+    );
+
+    // Object.entries(userData).forEach(([field, value]) => {
+    //   console.log(field, typeof value);
+    //   console.log(
+    //     "field === 'username' && typeof value === 'string'",
+    //     field === 'username' && typeof value === 'string',
+    //   );
+    //   console.log(
+    //     "field === 'age' && typeof value === 'number'",
+    //     field === 'age' && typeof value === 'number',
+    //   );
+    //   console.log(
+    //     "field === 'hobbies' && Array.isArray(value)",
+    //     field === 'hobbies' && Array.isArray(value),
+    //   );
+    //   console.log(
+    //     (field === 'username' && typeof value === 'string') ||
+    //       (field === 'age' && typeof value === 'number') ||
+    //       (field === 'hobbies' && Array.isArray(value)),
+    //   );
+    // });
+    const checkFieldsType = Object.entries(userData).every(([field, value]) => {
+      return (
+        (field === 'username' && typeof value === 'string') ||
+        (field === 'age' && typeof value === 'number') ||
+        (field === 'hobbies' && Array.isArray(value))
+      );
+    });
+
+    // console.log('checkFieldsType', checkFieldsType);
+    if (!checkFieldsName) {
+      return this.__returnServerAnswer(
+        400,
+        'Some fields are of the wrong name',
+      );
+    }
+
+    if (!checkFieldsType) {
+      return this.__returnServerAnswer(
+        400,
+        'Some fields are of the wrong type',
+      );
+    }
     const previousUserInfo = this.db.get(userId) as IUserDb;
     const updateUserData = Object.assign(previousUserInfo, userData);
     this.db.set(userId, updateUserData);

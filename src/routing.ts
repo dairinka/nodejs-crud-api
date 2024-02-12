@@ -21,7 +21,7 @@ export const routing = (
       get(req, res, db);
       break;
     case 'PUT':
-      put(req, res);
+      put(req, res, db);
       break;
     case 'DELETE':
       del(req, res);
