@@ -2,8 +2,8 @@ import { createServer } from 'http';
 import { routing } from './routing';
 import 'dotenv/config';
 
-const server = createServer(routing);
-
-server.listen(process.env.PORT, () => {
-  console.log(`Server is running on port`, process.env.PORT);
+export const server = createServer(routing);
+const port = process.env.PORT || 5000;
+server.listen(port, () => {
+  console.log(`Server is running on port`, port);
 });
