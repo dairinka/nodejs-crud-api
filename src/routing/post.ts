@@ -9,7 +9,7 @@ export const post = (
   res: ServerResponse<IncomingMessage>,
   db: UserDb,
 ) => {
-  if (req.url !== '/api/users') {
+  if (req.url !== '/api/users' && req.url !== '/api/users/') {
     errorResponse(res, 404, 'There is no such endpoint');
     return;
   }

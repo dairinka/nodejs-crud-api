@@ -9,15 +9,22 @@ export const get = (
   db: UserDb,
 ) => {
   const url = req.url;
-  if (!url || !url.startsWith('/api/users')) {
-    errorResponse(res, 404, 'There is no such endpoint');
-  }
   const urlParts = url?.split('/');
+  if (
+    !url ||
+    !url.startsWith('/api/users') ||
+    (urlParts && urlParts[2] !== 'users')
+  ) {
+    errorResponse(res, 404, 'There is no such endpoint');
+    return;
+  }
 
   let serverResponse: IServerResponse;
 
-  if (urlParts && urlParts.length > 4)
+  if (urlParts && urlParts.length > 4) {
     errorResponse(res, 404, 'There is no such endpoint');
+    return;
+  }
 
   try {
     const userId = urlParts && urlParts[3];
