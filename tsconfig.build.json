@@ -9,9 +9,10 @@
     "esm": true,
     "transpileOnly": true,
     "experimentalSpecifierResolution": "node",
-    "files": true,
+    "files": false,
     "compilerOptions": {
-      "module": "ESNext"
+      "module": "ESNext",
+      "composite": true
     }
   }
 }
