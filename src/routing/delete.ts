@@ -34,7 +34,7 @@ export const del = (
       const { status } = serverResponse;
       res.statusCode = status.code;
       if (status.code === 204) res.statusMessage = status.message;
-      res.end(status.message);
+      res.end(JSON.stringify(status.message));
     }
   } catch (err) {
     console.log(err);
