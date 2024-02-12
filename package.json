@@ -9,10 +9,10 @@
   "scripts": {
     "start:dev": "tsnd --respawn src/server.ts",
     "start:prod": "npm run build && cross-env NODE_ENV=production node ./bundle/server.js",
+    "start:multi": "cross-env API_MODE=cluster tsnd --respawn src/cluster/multiServer.ts",
     "build": "webpack",
     "start:product": "npm run build2 && node build/server",
     "build2": "tsc --project tsconfig.build.json",
-    "start:multi": "",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\"",
     "test": "jest --silent",
