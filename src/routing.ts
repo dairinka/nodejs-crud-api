@@ -24,7 +24,7 @@ export const routing = (
       put(req, res, db);
       break;
     case 'DELETE':
-      del(req, res);
+      del(req, res, db);
       break;
     default:
       errorResponse(res, 404, `you can't use ${req.method} method`);
