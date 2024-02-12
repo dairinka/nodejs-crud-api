@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": false,
+    "rootDir": "./src",
+    "outDir": "./build"
+  },
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true,
+    "experimentalSpecifierResolution": "node",
+    "files": true,
+    "compilerOptions": {
+      "module": "ESNext"
+    }
+  }
+}

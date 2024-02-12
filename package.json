@@ -7,8 +7,9 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start:dev": "tsnd --respawn --env-file=.env src/server.ts",
-    "start:prod": "",
+    "start:dev": "tsnd --respawn src/server.ts",
+    "start:prod": "npm run build && node build/server",
+    "build": "tsc --project tsconfig.build.json",
     "start:multi": "",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "format": "prettier --write \"src/**/*.ts\"",
