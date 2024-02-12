@@ -12,16 +12,17 @@ export const get = (
   if (!url || !url.startsWith('/api/users')) {
     errorResponse(res, 404, 'There is no such endpoint');
   }
-  const userId = url?.split('/');
+  const urlParts = url?.split('/');
 
   let serverResponse: IServerResponse;
 
-  if (userId && userId.length > 4)
+  if (urlParts && urlParts.length > 4)
     errorResponse(res, 404, 'There is no such endpoint');
 
   try {
-    if (userId?.length === 4 && userId[3]) {
-      serverResponse = db.getUserById(userId[3]);
+    const userId = urlParts && urlParts[3];
+    if (urlParts?.length === 4 && userId) {
+      serverResponse = db.getUserById(userId);
     } else {
       serverResponse = db.getAllUsers();
     }
