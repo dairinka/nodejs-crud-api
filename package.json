@@ -13,7 +13,7 @@
     "build": "webpack",
     "start:product": "npm run build2 && node build/server",
     "build2": "tsc --project tsconfig.build.json",
-    "lint": "eslint \"src/**/*.ts\" --fix",
+    "lint": "eslint \"src/**/*.ts\" ",
     "format": "prettier --write \"src/**/*.ts\"",
     "test": "jest --silent",
     "test:verbose": "jest"
